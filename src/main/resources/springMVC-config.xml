@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!--包扫描器-->
-    <context:component-scan base-package="com.bjpowernode.controller"/>
+    <context:component-scan base-package="com.atcjh.controller"/>
     <!--设置注解驱动-->
     <mvc:annotation-driven/>
     <!--静态资源处理，将找不到地址的请求都交给tomcat默认的servlet处理-->
@@ -25,7 +25,7 @@
             <mvc:exclude-mapping path="/"/>
             <mvc:exclude-mapping path="/user/login.do"/>
             <mvc:exclude-mapping path="/static/**"/>
-            <bean class="com.bjpowernode.interceptor.LoginInterception" />
+            <bean class="com.atcjh.interceptor.LoginInterception" />
         </mvc:interceptor>
     </mvc:interceptors>
     

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atcjh.mapper.TypeMapper">
+
+  <select id="queryTypes" resultType="type">
+    select id, name, description from tbl_type
+  </select>
+
+  <select id="queryType" resultType="type">
+    select id, name, description from tbl_type where id = #{id}
+  </select>
+
+  <insert id="insertType">
+    insert into tbl_type(id, name, description) value (#{type.id},#{type.name},#{type.description})
+  </insert>
+
+  <update id="updateType">
+    update tbl_type set name=#{type.name},description=#{type.description} where id=#{type.id}
+  </update>
+
+  <delete id="deleteTypes">
+    delete from tbl_type where id in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atcjh.mapper.ValueMapper">
+
+  <resultMap id="myValue_type" type="value">
+    <id column="vid" property="id"/>
+    <result column="value" property="value"/>
+    <result column="text" property="text"/>
+    <result column="orderNo" property="orderNo"/>
+    <association property="type" javaType="type">
+      <id column="id" property="id"/>
+      <result column="name" property="name"/>
+      <result column="description" property="description"/>
+    </association>
+  </resultMap>
+
+  <select id="queryValues" resultMap="myValue_type">
+    select v.id vid, v.value, v.text, v.orderNo, v.typeCode,t.id,t.name,t.description
+    from tbl_value v,tbl_type t
+    where v.typeCode=t.id
+    order by v.typeCode,v.orderNo
+  </select>
+
+  <insert id="insertValue">
+    insert into tbl_value (id, value, text, orderNo, typeCode)
+    values (#{value.id},#{value.value},#{value.text},#{value.orderNo},#{value.typeCode})
+  </insert>
+
+  <select id="queryById" resultMap="myValue_type">
+    select v.id vid, v.value, v.text, v.orderNo, v.typeCode,t.id,t.name
+    from tbl_value v,tbl_type t
+    where v.typeCode=t.id and v.id = #{id}
+  </select>
+
+  <update id="updateValue">
+    update tbl_value
+    <set>
+      <if test="value.value != null and value.value != ''">value=#{value.value},</if>
+      <if test="value.text != null and value.text != ''"> text=#{value.text}, </if>
+      <if test="value.orderNo != null and value.orderNo != 0">orderNo=#{value.orderNo}</if>
+    </set>
+    where id=#{value.id}
+  </update>
+
+  <delete id="deleteValue">
+    delete from tbl_value where id in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+        #{id}
+    </foreach>
+  </delete>
+
+  <select id="checkDel" resultType="string">
+    select distinct typeCode from tbl_value where typeCode in
+    <foreach collection="typeCodes" item="typeCode" open="(" close=")" separator=",">
+      #{typeCode}
+    </foreach>
+  </select>
+
+  <delete id="deleteByTypeCode">
+    delete from tbl_value where typeCode in
+    <foreach collection="typeCodes" item="typeCode" open="(" close=")" separator=",">
+      #{typeCode}
+    </foreach>
+  </delete>
+</mapper>
